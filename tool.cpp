@@ -10,15 +10,14 @@ Tool::Tool(QWidget *parent) :
     ui->Display->setTabStopWidth(50);
     ui->sendfile->hide();
     ui->progressBar->hide();
-    /////////////////////////±àÂëÑ¡Ôñ////////////////////////////////////
+    /////////////////////////ç¼–ç é€‰æ‹©////////////////////////////////////
     QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
     QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
-    //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-32"));
     ///////////////////////////////////////////////////////////////////////////////
     on_help_clicked();
 }
 ////////////////////////////////////////////////////////////////
-//³õÊ¼»¯ÖØÖÃºÍÇåÆÁ
+//åˆå§‹åŒ–é‡ç½®å’Œæ¸…å±
 ////////////////////////////////////////////////////////////////
 void Tool::on_Init_clicked()
 {
@@ -62,26 +61,26 @@ void Tool::on_ListenTcp_clicked()
     if(port<=0)
     {
         QMessageBox box;
-        box.setText("¶Ë¿Ú´íÎó");
+        box.setText("ç«¯å£é”™è¯¯");
         box.exec();
         return ;
     }
     if(!temp->listen(QHostAddress::Any,port))
     {
         QMessageBox box;
-        box.setText("ÇëÈ·±£¶Ë¿ÚÎ´±»Ê¹ÓÃ");
+        box.setText("è¯·ç¡®ä¿ç«¯å£æœªè¢«ä½¿ç”¨");
         box.exec();
         return ;
     }
     QString name;
-    name=QString("Tcp ¼àÌı %1").arg(port);
+    name=QString("Tcp ç›‘å¬ %1").arg(port);
     qDebug()<<name;
     tcpserver.insert(name,temp);
     ui->listWidget->addItem(name);
     connect(temp,SIGNAL(newConnection()),this,SLOT(newTcpConnect()));
 }
 ////////////////////////////////////////////////////////////////////////
-//½ÓÊÜĞÂµÄTcpÁ¬½Ó
+//æ¥å—æ–°çš„Tcpè¿æ¥
 ////////////////////////////////////////////////////////////////////////
 void Tool::newTcpConnect()
 {
@@ -93,9 +92,9 @@ void Tool::newTcpConnect()
         while(iTcpServer.value()->hasPendingConnections())
         {
             QTcpSocket *conn=iTcpServer.value()->nextPendingConnection();
-            QString peerName=QString("Óë%1:%2µÄTCPÁ¬½Ó").arg(conn->peerAddress().toString()).arg(conn->peerPort());
-            int r=QMessageBox::question(this,QString("ÓĞÒ»¸öĞÂTCPÁ¬½ÓÇëÇó£¬ÊÇ·ñ½ÓÊÜ"),
-                                            QString("%1½ÓÊÕµ½ÁËÒ»¸öĞÂÁ¬½ÓÇëÇó%2").arg(name).arg(peerName),
+            QString peerName=QString("ä¸%1:%2çš„TCPè¿æ¥").arg(conn->peerAddress().toString()).arg(conn->peerPort());
+            int r=QMessageBox::question(this,QString("æœ‰ä¸€ä¸ªæ–°TCPè¿æ¥è¯·æ±‚ï¼Œæ˜¯å¦æ¥å—"),
+                                            QString("%1æ¥æ”¶åˆ°äº†ä¸€ä¸ªæ–°è¿æ¥è¯·æ±‚%2").arg(name).arg(peerName),
                                             QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes);
             if(QMessageBox::Yes!=r)
                 {
@@ -110,7 +109,7 @@ void Tool::newTcpConnect()
     updatelist();
 }
 ///////////////////////////////////////////////////////////////////
-//´íÎó´¦Àíº¯Êı
+//é”™è¯¯å¤„ç†å‡½æ•°
 //////////////////////////////////////////////////////////////////
 void Tool::onSocketError(QAbstractSocket::SocketError s)
 {
@@ -120,7 +119,7 @@ void Tool::onSocketError(QAbstractSocket::SocketError s)
         iUdp.next();
         if(iUdp.value()->error()==s)
         {
-            ui->Display->append(QString("%1·¢Éú´íÎó£º%2").arg(iUdp.key()).arg(iUdp.value()->errorString()));
+            ui->Display->append(QString("%1å‘ç”Ÿé”™è¯¯ï¼š%2").arg(iUdp.key()).arg(iUdp.value()->errorString()));
             delete iUdp.value();
             udpsocket.remove(iUdp.key());
         }
@@ -132,7 +131,7 @@ void Tool::onSocketError(QAbstractSocket::SocketError s)
         iTcpSocket.next();
         if(iTcpSocket.value()->error()==s)
         {
-             ui->Display->append(QString("%1·¢Éú´íÎó£º%2").arg(iTcpSocket.key()).arg(iTcpSocket.value()->errorString()));
+             ui->Display->append(QString("%1å‘ç”Ÿé”™è¯¯ï¼š%2").arg(iTcpSocket.key()).arg(iTcpSocket.value()->errorString()));
             iTcpSocket.value()->abort();
             QString s=iTcpSocket.key();
             tcpsocket.remove(iTcpSocket.key());
@@ -151,14 +150,14 @@ void Tool::on_ListenUdp_clicked()
     if(port<=1023||port>65535)
     {
         QMessageBox box;
-        box.setText("¶Ë¿Ú´íÎó");
+        box.setText("ç«¯å£é”™è¯¯");
         box.exec();
         return ;
     }
     if(!temp->bind(port))
     {
         QMessageBox box;
-        box.setText("ÇëÈ·±£¶Ë¿ÚÎ´±»Ê¹ÓÃ");
+        box.setText("è¯·ç¡®ä¿ç«¯å£æœªè¢«ä½¿ç”¨");
         box.exec();
         return ;
     }
@@ -171,12 +170,12 @@ void Tool::on_ListenUdp_clicked()
     connect(temp,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(onSocketError(QAbstractSocket::SocketError)));
 }
 ////////////////////////////////////////////////////////////////////////
-//ĞÅÏ¢Êä³ö
+//ä¿¡æ¯è¾“å‡º
 /////////////////////////////////////////////////////////////////////////
 void Tool::outPut()
 {
     /////////////////////////////////////////////////////////////////////////
-    //UDP²¿·Ö
+    //UDPéƒ¨åˆ†
     /////////////////////////////////////////////////////////////////////////
     QMapIterator<QString,QUdpSocket *> i(udpsocket);
     while(i.hasNext())
@@ -193,7 +192,7 @@ void Tool::outPut()
             QString da;
             da=QString::fromAscii(data.data());
             qDebug()<<da;
-            QString str=QString("´Ó%1:%2ÊÕµ½Í¨¹ıUDP´«À´µÄÊı¾İ°ü\n%3\n").arg(sender.toString()).arg(senderPort).arg(da);
+            QString str=QString("ä»%1:%2æ”¶åˆ°é€šè¿‡UDPä¼ æ¥çš„æ•°æ®åŒ…\n%3\n").arg(sender.toString()).arg(senderPort).arg(da);
             buff.push_back(str.toAscii());
         }
         qDebug()<<buff;
@@ -201,7 +200,7 @@ void Tool::outPut()
         buff.clear();
     }
     /////////////////////////////////////////////////////////////////////////
-    //Tcp²¿·Ö
+    //Tcpéƒ¨åˆ†
     /////////////////////////////////////////////////////////////////////////
     QMapIterator<QString,QTcpSocket *> iTcp(tcpsocket);
     while(iTcp.hasNext())
@@ -213,7 +212,7 @@ void Tool::outPut()
             QByteArray data=conn->readAll();
             QString da;
             da=QString::fromAscii(data.data());
-            QString str=(QString("ÊÕµ½À´×ÔTCP:%1:%2µÄÊı¾İ°ü:\n%3")
+            QString str=(QString("æ”¶åˆ°æ¥è‡ªTCP:%1:%2çš„æ•°æ®åŒ…:\n%3")
                                                                                                            .arg(conn->peerAddress().toString())
                                                                                                            .arg(conn->peerPort())
                                                                                                            .arg(da));
@@ -225,7 +224,7 @@ void Tool::outPut()
     }
 }
 ////////////////////////////////////////////////////////////////////////
-//¸üĞÂĞ­ÒéÁĞ±í
+//æ›´æ–°åè®®åˆ—è¡¨
 ////////////////////////////////////////////////////////////////////////
 void Tool::updatelist()
 {
@@ -257,14 +256,14 @@ void Tool::updatelist()
 
 }
 ////////////////////////////////////////////////////////////////////////
-//¶Ï¿ªÒÑ½¨Á¢µÄÁ´½Ó
+//æ–­å¼€å·²å»ºç«‹çš„é“¾æ¥
 ///////////////////////////////////////////////////////////////////////
 void Tool::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
     QString info;
     if(udpsocket.contains(item->text()))
     {
-        info=item->text()+"¶Ï¿ª\n";
+        info=item->text()+"æ–­å¼€\n";
         ui->Display->append(info);
         delete udpsocket[item->text()];
         udpsocket.remove(item->text());
@@ -273,7 +272,7 @@ void Tool::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
     }
     if(tcpserver.contains(item->text()))
     {
-        info=item->text()+"¶Ï¿ª\n";
+        info=item->text()+"æ–­å¼€\n";
         ui->Display->append(info);
         tcpserver[item->text()]->close();
         tcpserver.remove(item->text());
@@ -282,7 +281,7 @@ void Tool::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
     }
     if(tcpsocket.contains(item->text()))
     {
-        info=item->text()+"¶Ï¿ª\n";
+        info=item->text()+"æ–­å¼€\n";
         ui->Display->append(info);
         tcpsocket[item->text()]->close();
         tcpsocket.remove(item->text());
@@ -291,7 +290,7 @@ void Tool::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
     }
 }
 //////////////////////////////////////////////////////////////////////////////////
-//Í¨¹ıTCP·¢ËÍ
+//é€šè¿‡TCPå‘é€
 //////////////////////////////////////////////////////////////////////////////////
 void Tool::on_SendTcp_clicked()
 {
@@ -302,13 +301,13 @@ void Tool::on_SendTcp_clicked()
     data.append(ui->TcpInPut->toPlainText());
     sender->write(data);
     QString displayInfo;
-    displayInfo=QString("Í¨¹ı%1·¢ËÍĞÅÏ¢:\n").arg(ui->ActiveTcp->currentText());
+    displayInfo=QString("é€šè¿‡%1å‘é€ä¿¡æ¯:\n").arg(ui->ActiveTcp->currentText());
     displayInfo+=QString::fromAscii(data.data());
     ui->Display->append(displayInfo);
     ui->TcpInPut->clear();
 }
 ///////////////////////////////////////////////////////////////////
-//Í¨¹ıUDP·¢ËÍ
+//é€šè¿‡UDPå‘é€
 //////////////////////////////////////////////////////////////////
 void Tool::on_SendUdp_clicked()
 {
@@ -325,15 +324,15 @@ void Tool::on_SendUdp_clicked()
     if(sender->writeDatagram(data,ip,goalPort)==-1)
     {
         QMessageBox box;
-        box.setText("ÎŞ·¨·¢ËÍÊı¾İ£¬Çë¼ì²é¶Ë¿ÚºÍIPµØÖ·È·±£ÕıÈ·Í¨³©");
+        box.setText("æ— æ³•å‘é€æ•°æ®ï¼Œè¯·æ£€æŸ¥ç«¯å£å’ŒIPåœ°å€ç¡®ä¿æ­£ç¡®é€šç•…");
         box.exec();
         return;
     }
     ui->UdpInPut->clear();
-    ui->Display->append(QString("Í¨¹ıUDP·¢ËÍĞÅÏ¢ÖÁ%1:%2\n%3").arg(address).arg(goalPort).arg(data.data()));
+    ui->Display->append(QString("é€šè¿‡UDPå‘é€ä¿¡æ¯è‡³%1:%2\n%3").arg(address).arg(goalPort).arg(data.data()));
 }
 /////////////////////////////////////////////////////////////////
-//½¨Á¢ĞÂµÄTCPÁ´½Ó
+//å»ºç«‹æ–°çš„TCPé“¾æ¥
 /////////////////////////////////////////////////////////////////
 void Tool::on_CreateTcp_clicked()
 {
@@ -345,16 +344,16 @@ void Tool::on_CreateTcp_clicked()
      connect(Tcp,SIGNAL(readyRead()),this,SLOT(outPut()));
     connect(Tcp,SIGNAL(connected()),this,SLOT(newTcpCreate()));
     Tcp->connectToHost(ip,Port);
-    tcpsocket.insert(QString("TCPÁ´½Óµ½%1:%2").arg(ip.toString()).arg(Port),Tcp);
-    ui->Display->append("Á´½ÓÖĞ...");
+    tcpsocket.insert(QString("TCPé“¾æ¥åˆ°%1:%2").arg(ip.toString()).arg(Port),Tcp);
+    ui->Display->append("é“¾æ¥ä¸­...");
 }
 void Tool::newTcpCreate()
 {
-    ui->Display->append("Á´½Ó³É¹¦");
+    ui->Display->append("é“¾æ¥æˆåŠŸ");
     updatelist();
 }
 //////////////////////////////////////////////////////////////////
-//µÃµ½±¾µØIP
+//å¾—åˆ°æœ¬åœ°IP
 //////////////////////////////////////////////////////////////////
 void Tool::on_LocalIp_clicked()
 {
@@ -369,20 +368,20 @@ void Tool::on_LocalIp_clicked()
         }
         if (ipAddress.isEmpty())
             ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
-        ui->Display->append(QString("±¾»úIP%1").arg(ipAddress));
+        ui->Display->append(QString("æœ¬æœºIP%1").arg(ipAddress));
 }
 /////////////////////////////////////////////////////////////////////
-//°ïÖúĞÅÏ¢
+//å¸®åŠ©ä¿¡æ¯
 //////////////////////////////////////////////////////////////////
 void Tool::on_help_clicked()
 {
     QString helpInfo;
-    helpInfo+="1¡£×óÉÏ·½µÄ´ó¿òÊÇÊä³öĞÅÏ¢£¬µã»÷ÇåÆÁ°´Å¥¿ÉÒÔÇå³ı\n\n";
-    helpInfo+="2¡£ÓÒÉÏ·½µÄ´ó¿òÊÇÒÑ¾­½¨Á¢µÄÁ¬½Ó£¬Ïë¹Ø±ÕÄÄÒ»¸öµÄ»°Ë«»÷¾Í¿ÉÒÔÁË\n\n";
-    helpInfo+="3¡£ÏÂÃæÊÇTCPºÍUDPµÄ¸÷ÖÖ²Ù×÷£¬¶Ë¿ÚµÄ·¶Î§ÊÇ1023µ½65535£¬²»½âÊÍ¡ª¡£¡ª\n\n";
-    helpInfo+="4¡£³õÊ¼»¯ÊÇ¶Ï¿ªËùÓĞÁ¬½Ó£¬½÷É÷Ê¹ÓÃ\n\n";
-    helpInfo+="5¡£½ÓÊÕºÍ·¢ËÍµÄĞÅÏ¢±àÂëÊÇGBK¸ñÊ½£¬±¾À´»¹Ğ´ÁË·¢ÎÄ¼ş¹¦ÄÜ²»¹ıÃ»Ê²Ã´´óÓÃ£¬»¹ÅªµÃ½çÃæºÜÄÑ¿´£¬ËùÒÔÉ¾µôÁË\n\n";
-    helpInfo+="Õâ¸öĞ¡¹¤¾ßÊÇ±¾ÈË¿ÎÓàÊ±¼äĞ´µÄºÜ´Ö²Ú£¬ÓĞÊ²Ã´Òâ¼ûºÍ½¨ÒéÇë·¢ÓÊÏäqjphh003@163.com\n¡ª¡£¡ª\n\n";
+    helpInfo+="1ã€‚å·¦ä¸Šæ–¹çš„å¤§æ¡†æ˜¯è¾“å‡ºä¿¡æ¯ï¼Œç‚¹å‡»æ¸…å±æŒ‰é’®å¯ä»¥æ¸…é™¤\n\n";
+    helpInfo+="2ã€‚å³ä¸Šæ–¹çš„å¤§æ¡†æ˜¯å·²ç»å»ºç«‹çš„è¿æ¥ï¼Œæƒ³å…³é—­å“ªä¸€ä¸ªçš„è¯åŒå‡»å°±å¯ä»¥äº†\n\n";
+    helpInfo+="3ã€‚ä¸‹é¢æ˜¯TCPå’ŒUDPçš„å„ç§æ“ä½œï¼Œç«¯å£çš„èŒƒå›´æ˜¯1023åˆ°65535ï¼Œä¸è§£é‡Šâ€”ã€‚â€”\n\n";
+    helpInfo+="4ã€‚åˆå§‹åŒ–æ˜¯æ–­å¼€æ‰€æœ‰è¿æ¥ï¼Œè°¨æ…ä½¿ç”¨\n\n";
+    helpInfo+="5ã€‚æ¥æ”¶å’Œå‘é€çš„ä¿¡æ¯ç¼–ç æ˜¯GBKæ ¼å¼ï¼Œæœ¬æ¥è¿˜å†™äº†å‘æ–‡ä»¶åŠŸèƒ½ä¸è¿‡æ²¡ä»€ä¹ˆå¤§ç”¨ï¼Œè¿˜å¼„å¾—ç•Œé¢å¾ˆéš¾çœ‹ï¼Œæ‰€ä»¥åˆ æ‰äº†\n\n";
+    helpInfo+="è¿™ä¸ªå°å·¥å…·æ˜¯æœ¬äººè¯¾ä½™æ—¶é—´å†™çš„å¾ˆç²—ç³™ï¼Œæœ‰ä»€ä¹ˆæ„è§å’Œå»ºè®®è¯·å‘é‚®ç®±qjphh003@163.com\nâ€”ã€‚â€”\n\n";
     ui->Display->append(helpInfo);
 }
 
