@@ -378,10 +378,9 @@ void Tool::on_help_clicked()
     QString helpInfo;
     helpInfo+="1。左上方的大框是输出信息，点击清屏按钮可以清除\n\n";
     helpInfo+="2。右上方的大框是已经建立的连接，想关闭哪一个的话双击就可以了\n\n";
-    helpInfo+="3。下面是TCP和UDP的各种操作，端口的范围是1023到65535，不解释—。—\n\n";
+    helpInfo+="3。下面是TCP和UDP的各种操作，端口的范围是1023到65535\n\n";
     helpInfo+="4。初始化是断开所有连接，谨慎使用\n\n";
-    helpInfo+="5。接收和发送的信息编码是GBK格式，本来还写了发文件功能不过没什么大用，还弄得界面很难看，所以删掉了\n\n";
-    helpInfo+="这个小工具是本人课余时间写的很粗糙，有什么意见和建议请发邮箱qjphh003@163.com\n—。—\n\n";
+    helpInfo+="5。接收和发送的信息编码是utf-8格式，\n\n";
     ui->Display->append(helpInfo);
 }
 
